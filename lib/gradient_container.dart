@@ -1,21 +1,15 @@
-import 'dart:math';
-
 import 'package:dice_roller_app/controllers/dice_controller.dart';
+import 'package:dice_roller_app/dice_roller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class GradientContainer extends StatefulWidget {
+class GradientContainer extends StatelessWidget {
   GradientContainer({
     super.key,
   });
 
-  @override
-  State<GradientContainer> createState() => _GradientContainerState();
-}
+  final controller = Get.put(DiceController());
 
-DiceController controller = Get.put(DiceController());
-
-class _GradientContainerState extends State<GradientContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,38 +23,9 @@ class _GradientContainerState extends State<GradientContainer> {
           end: Alignment.bottomCenter,
         ),
       ),
-      child: GestureDetector(
-        onPanUpdate: (details) {
-          setState(() {
-            controller.offset += details.delta;
-          });
-        },
-        child: const Center(
-          child: DiceCube(),
-        ),
+      child: Center(
+        child: DicerRoller(),
       ),
-    );
-  }
-}
-
-class DiceCube extends StatelessWidget {
-  const DiceCube({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Transform(
-          transform: Matrix4.identity()
-            ..setEntry(3, 2, 0.001)
-            ..rotateX(controller.offset.dx * pi / 180)
-            ..rotateY(controller.offset.dy * pi / 180),
-          child: Image.asset(
-            'assets/images/dice-1.png',
-            scale: 10,
-          ),
-        ),
-      ],
     );
   }
 }
